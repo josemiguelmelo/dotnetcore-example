@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebApi.DataModels\WebApi.DataModels.csproj" />
+    <ProjectReference Include="..\WebApi.BusinessServices\WebApi.BusinessServices.csproj" />
+    <ProjectReference Include="..\WebApi.BusinessEntities\WebApi.BusinessEntities.csproj" />
+  </ItemGroup>
+
+</Project>
