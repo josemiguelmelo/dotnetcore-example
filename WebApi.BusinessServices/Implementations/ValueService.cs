@@ -5,8 +5,9 @@ using WebApi.BusinessEntities;
 using WebApi.DataModels;
 using WebApi.DataModels.UnitOfWork;
 using AutoMapper;
+using WebApi.BusinessServices.Interfaces;
 
-namespace WebApi.BusinessServices
+namespace WebApi.BusinessServices.Implementations
 {
     public class ValueService : IValueService
     {

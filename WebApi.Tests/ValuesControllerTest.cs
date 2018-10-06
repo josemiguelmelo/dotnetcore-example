@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Api.Controllers;
 using WebApi.BusinessEntities;
-using WebApi.BusinessServices;
+using WebApi.BusinessServices.Interfaces;
+using WebApi.BusinessServices.Implementations;
 using Xunit;
 
 namespace WebApi.Tests

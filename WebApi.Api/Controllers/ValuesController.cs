@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Api.Exceptions;
 using WebApi.BusinessEntities;
-using WebApi.BusinessServices;
+using WebApi.BusinessServices.Interfaces;
 using WebApi.DataModels;
 
 namespace WebApi.Api.Controllers
@@ -36,11 +36,11 @@ namespace WebApi.Api.Controllers
         {
             try
             {
-                return CreatedAtAction("POST", _services.Add(value));
+                return CreatedAtAction("GET", _services.Add(value));
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorMessage() { message = "Could not create value.", code = ErrorCodes.NotCreatedModel });
+                return BadRequest(new ErrorMessage() { message = e.Message, code = ErrorCodes.NotCreatedModel });
             }
         }
     }
