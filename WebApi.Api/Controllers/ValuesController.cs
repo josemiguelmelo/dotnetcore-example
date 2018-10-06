@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Api.Exceptions;
 using WebApi.BusinessEntities;
 using WebApi.BusinessServices;
 using WebApi.DataModels;
 
 namespace WebApi.Api.Controllers
 {
+    [EnableCors("SiteCorsPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -28,9 +32,16 @@ namespace WebApi.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public ActionResult<ValueEntity> AddValue(ValueEntity value)
+        public ActionResult<ValueEntity> AddValue([FromBody] ValueEntity value)
         {
-            return _services.Add(value);
+            try
+            {
+                return _services.Add(value);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new ErrorMessage() { message = "Could not create value.", code = ErrorCodes.NotCreatedModel });
+            }
         }
     }
 }
