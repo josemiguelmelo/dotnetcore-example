@@ -9,6 +9,7 @@ using NJsonSchema;
 using NSwag.AspNetCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using System;
 
 namespace WebApi.Api
 {

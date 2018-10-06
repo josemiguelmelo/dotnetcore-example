@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DataModels;
+using WebApi.DataModels.DbProviders;
 using WebApi.DataModels.GenericRepository;
 
 namespace WebApi.DataModels.UnitOfWork
@@ -16,9 +18,10 @@ namespace WebApi.DataModels.UnitOfWork
         #endregion
 
         public UnitOfWork()
-        {            
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-            options.UseInMemoryDatabase("InMemoryDb");
+        {
+            var dbProviderName = System.Environment.GetEnvironmentVariable(AbstractDbProvider.DB_PROVIDER);
+            AbstractDbProvider dbProvider = Assembly.GetExecutingAssembly().CreateInstance(dbProviderName) as AbstractDbProvider;
+            var options = dbProvider.Config();
             _context = new ApplicationDbContext(options.Options);
         }
 
@@ -62,7 +65,7 @@ namespace WebApi.DataModels.UnitOfWork
         #region Implementing IDiosposable...
 
         #region private dispose variable declaration...
-        private bool disposed = false; 
+        private bool disposed = false;
         #endregion
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace WebApi.DataModels.UnitOfWork
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        } 
+        }
         #endregion
     }
 }
