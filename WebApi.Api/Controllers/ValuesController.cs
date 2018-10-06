@@ -25,9 +25,9 @@ namespace WebApi.Api.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<ValueEntity>> Get()
+        public ActionResult<List<ValueEntity>> Get()
         {
-            return _services.GetValuesList().ToList();
+            return Ok(_services.GetValuesList().ToList());
         }
 
         // POST api/values
@@ -36,7 +36,7 @@ namespace WebApi.Api.Controllers
         {
             try
             {
-                return _services.Add(value);
+                return CreatedAtAction("POST", _services.Add(value));
             }
             catch (Exception e)
             {
