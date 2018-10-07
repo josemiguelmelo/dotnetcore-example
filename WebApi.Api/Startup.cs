@@ -10,6 +10,9 @@ using NSwag.AspNetCore;
 using System.Reflection;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using System;
+using WebApi.DataModels;
+using WebApi.DataModels.DbProviders;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Api
 {
@@ -26,6 +29,11 @@ namespace WebApi.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddSwagger();
 

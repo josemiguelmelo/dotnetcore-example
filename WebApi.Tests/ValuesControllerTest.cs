@@ -6,6 +6,8 @@ using WebApi.BusinessEntities;
 using WebApi.BusinessServices.Interfaces;
 using WebApi.BusinessServices.Implementations;
 using Xunit;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace WebApi.Tests
 {
@@ -14,9 +16,19 @@ namespace WebApi.Tests
         ValuesController _controller;
         IValueService _service;
 
+        public static IConfiguration InitConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Path.Combine(AppContext.BaseDirectory, "../../../"))
+                .AddJsonFile("appsettings.test.json", optional: false)
+                .Build();
+            return config;
+        }
         public ValuesControllerTest()
         {
-            _service = new ValueService();
+            var config = InitConfiguration();
+
+            _service = new ValueService(config);
             _controller = new ValuesController(_service);
         }
         [Fact]

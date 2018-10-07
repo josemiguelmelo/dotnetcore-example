@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WebApi.DataModels;
 using WebApi.DataModels.DbProviders;
 using WebApi.DataModels.GenericRepository;
@@ -11,18 +12,28 @@ namespace WebApi.DataModels.UnitOfWork
 {
     public class UnitOfWork : IDisposable
     {
+        public static string DB_PROVIDERS_NAMESPACE = "WebApi.DataModels.DbProviders.";
+        public static string DEFAULT_DB_PROVIDER = "InMemoryDbProvider";
+
         #region Private member variables...
 
         private ApplicationDbContext _context = null;
         private GenericRepository<Value> _valueRepository;
         #endregion
 
-        public UnitOfWork()
+        public UnitOfWork(IConfiguration configuration)
         {
-            var dbProviderName = System.Environment.GetEnvironmentVariable(AbstractDbProvider.DB_PROVIDER);
-            AbstractDbProvider dbProvider = Assembly.GetExecutingAssembly().CreateInstance(dbProviderName) as AbstractDbProvider;
+            var dbProviderName = DB_PROVIDERS_NAMESPACE + configuration.GetValue("DbProvider", DEFAULT_DB_PROVIDER);
+            Object[] args = { configuration };
+            Type t = Type.GetType(dbProviderName);
+            AbstractDbProvider dbProvider = Activator.CreateInstance(t, args) as AbstractDbProvider;
             var options = dbProvider.Config();
             _context = new ApplicationDbContext(options.Options);
+        }
+
+        public UnitOfWork(ApplicationDbContext dbContext)
+        {
+            _context = dbContext;
         }
 
         #region Public Repository Creation properties...

@@ -13,9 +13,18 @@ namespace WebApi.BusinessServices.Implementations
     {
         private readonly UnitOfWork _unitOfWork;
 
-        public ValueService()
+        public ValueService(Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = new UnitOfWork(configuration);
+        }
+        public ValueService(ApplicationDbContext dbContext)
+        {
+            _unitOfWork = new UnitOfWork(dbContext);
+        }
+
+        public ValueService(ApplicationDbContext dbContext, Microsoft.Extensions.Configuration.IConfiguration configuration)
+        {
+            _unitOfWork = new UnitOfWork(dbContext);
         }
 
         public ValueEntity Add(ValueEntity valueEntity)
